@@ -1,31 +1,13 @@
-require 'chef/resource'
+require 'chef/resource/lwrp_base'
 
-class Chef::Resource::TrustedCertificate < Chef::Resource
+class Chef::Resource::TrustedCertificate < Chef::Resource::LWRPBase
   provides :trusted_certificate
 
-  def initialize(name, run_context = nil)
-    super
+  actions :create
+  default_action :create
 
-    @provider = Chef::Provider::TrustedCertificate
-    @resource_name = :trusted_certificate
-    @action = :create
-    @certificate_name = name
-    @allowed_actions = [:create, :update, :delete]
-  end
+  self.resource_name = :trusted_certificate
 
-  def content(arg = nil)
-    set_or_return(
-      :content,
-      arg,
-      kind_of: String, required: true
-    )
-  end
-
-  def certificate_name(arg = nil)
-    set_or_return(
-      :certificate_name,
-      arg,
-      kind_of: String
-    )
-  end
+  attribute :certificate_name, kind_of: String, name_attribute: true, required: true
+  attribute :content, kind_of: String, required: true
 end
