@@ -9,6 +9,7 @@ class Chef::Resource::TrustedCertificate < Chef::Resource
     @provider = Chef::Provider::TrustedCertificate
     @resource_name = :trusted_certificate
     @action = :create
+    @certificate_name = name
     @allowed_actions = [:create, :update, :delete]
   end
 
@@ -17,6 +18,14 @@ class Chef::Resource::TrustedCertificate < Chef::Resource
       :content,
       arg,
       kind_of: String, required: true
+    )
+  end
+
+  def certificate_name(arg = nil)
+    set_or_return(
+      :certificate_name,
+      arg,
+      kind_of: String
     )
   end
 end

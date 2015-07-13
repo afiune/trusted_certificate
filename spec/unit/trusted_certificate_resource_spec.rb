@@ -36,4 +36,12 @@ describe Chef::Resource::TrustedCertificate do
         .to raise_error(Chef::Exceptions::ValidationFailed)
     end
   end
+
+  describe '#certificate_name' do
+    it 'only accepts a String' do
+      @resource.certificate_name 'certificate name'
+      expect(@resource.certificate_name).to eql('certificate name')
+      expect { @resource.certificate_name :not_a_string }.to raise_error(ArgumentError)
+    end
+  end
 end
