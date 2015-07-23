@@ -4,6 +4,7 @@ class Chef
   class Provider
     class TrustedCertificate < Chef::Provider::LWRPBase
       provides :trusted_certificate
+      use_inline_resources
 
       def whyrun_supported?
         true
@@ -18,15 +19,13 @@ class Chef
           certificate_path = '/usr/local/share/ca-certificates/' \
                              "#{new_resource.certificate_name}.crt"
 
-          f = file certificate_path do
+          file certificate_path do
             content new_resource.content
             owner 'root'
             group 'staff'
             action :create
             notifies :run, 'execute[update-ca-certificates]'
           end
-
-          new_resource.updated_by_last_action(f.updated_by_last_action?)
         end
       end
     end
